@@ -23,10 +23,17 @@ def load_images_from(folder_path, verbose=False):
     counter = 0
     total = len(dirs)
 
+  regex = r"d([0-9]+)"
+
   for d in dirs:
     images.extend(
-      # Maps image path to a numpy array using the imread function
-      map(lambda img: imageio.imread(img), d.iterdir()))
+        # Maps image path to a numpy array using the imread function
+        map(lambda img: (
+            str(img).split("d")[2].split("_")[0],
+            imageio.imread(img)
+          ),
+          d.iterdir()
+        ))
 
     if verbose:
       counter += 1
@@ -74,10 +81,10 @@ def load_defect_info(path):
 
 
 if __name__ == '__main__':
-  # images = load_images_from('./data', verbose=True)
+  images = load_images_from('./data', verbose=True)
 
-  # # Print the shape of the first 10 images
-  # for i in range(0, 10):
-  #   print(images[i].shape)
+  # Print the shape of the first 10 images
+  for i in range(0, 2):
+    print(images[i])
 
-  df = load_defect_info("./DefectsINfo.txt")
+  # meta_data = load_defect_info('./defect_info_test.txt')
